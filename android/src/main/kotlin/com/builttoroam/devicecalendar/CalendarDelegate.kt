@@ -416,14 +416,16 @@ class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener {
 
                     if (originalSyncId != null) {
                         val instanceValues = ContentValues()
-                        instanceValues.put(Events.DTSTART, event.eventStartDate)
-                        instanceValues.put(
-                            Events.DURATION,
-                            Duration.between(
-                                Instant.ofEpochMilli(event.originalInstanceTime!!),
-                                Instant.ofEpochMilli(event.eventEndDate!!)
-                            ).toString()
-                        )
+                        if (event.eventStartDate != null)
+                            instanceValues.put(Events.DTSTART, event.eventStartDate)
+                        if (event.eventEndDate != null)
+                            instanceValues.put(
+                                Events.DURATION,
+                                Duration.between(
+                                    Instant.ofEpochMilli(event.originalInstanceTime!!),
+                                    Instant.ofEpochMilli(event.eventEndDate!!)
+                                ).toString()
+                            )
                         instanceValues.put(Events.ALL_DAY, event.eventAllDay)
                         instanceValues.put(Events.TITLE, event.eventTitle)
                         instanceValues.put(Events.DESCRIPTION, event.eventDescription)
@@ -569,9 +571,11 @@ class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener {
         val values = ContentValues()
         val duration: String? = null
         values.put(Events.ALL_DAY, if (event.eventAllDay) 1 else 0)
-        values.put(Events.DTSTART, event.eventStartDate!!)
+        if (event.eventStartDate != null)
+            values.put(Events.DTSTART, event.eventStartDate!!)
         values.put(Events.EVENT_TIMEZONE, getTimeZone(event.eventStartTimeZone).id)
-        values.put(Events.DTEND, event.eventEndDate!!)
+        if (event.eventEndDate != null)
+            values.put(Events.DTEND, event.eventEndDate!!)
         values.put(Events.EVENT_END_TIMEZONE, getTimeZone(event.eventEndTimeZone).id)
         values.put(Events.TITLE, event.eventTitle)
         values.put(Events.DESCRIPTION, event.eventDescription)

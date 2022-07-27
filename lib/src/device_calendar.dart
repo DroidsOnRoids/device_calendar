@@ -232,28 +232,6 @@ class DeviceCalendarPlugin {
                 timeZoneDatabase.locations[event.end!.location.name]!);
           }
         }
-
-        _assertParameter(
-          result,
-          !(event.allDay == true && (event.calendarId?.isEmpty ?? true) ||
-              event.start == null ||
-              event.end == null),
-          ErrorCodes.invalidArguments,
-          ErrorMessages.createOrUpdateEventInvalidArgumentsMessageAllDay,
-        );
-
-        _assertParameter(
-          result,
-          !(event.allDay != true &&
-              ((event.calendarId?.isEmpty ?? true) ||
-                  event.start == null ||
-                  event.end == null ||
-                  (event.start != null &&
-                      event.end != null &&
-                      event.start!.isAfter(event.end!)))),
-          ErrorCodes.invalidArguments,
-          ErrorMessages.createOrUpdateEventInvalidArgumentsMessage,
-        );
       },
       arguments: () => event.toJson(),
     );
