@@ -20,4 +20,5 @@ class Event {
     var availability: Availability? = null
     var eventStatus: EventStatus? = null
     var originalInstanceTime: Long? = null
+    var originalId: Long? = null
 }
